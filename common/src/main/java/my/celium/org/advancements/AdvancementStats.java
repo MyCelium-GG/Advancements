@@ -7,8 +7,8 @@ import my.celium.org.stats.ModStats;
  * consent: which views get opened, which advancements people track, and the settings.
  */
 public final class AdvancementStats {
-    /** Project token from faststats.dev (public, ships in the jar). Empty = stats off. */
-    private static final String TOKEN = "";
+    /** Project token from faststats.dev (public, ships in the jar). */
+    private static final String TOKEN = "a151ead18abcdb157eed7cf35480a95a";
 
     private static volatile ModStats stats;
 

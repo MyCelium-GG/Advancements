@@ -255,6 +255,7 @@ public final class Tracker {
         if (list.complete() && !wasComplete && sameAdvancement) {
             completeStart = net.minecraft.util.Util.getMillis();
             Sounds.advancementDone(Theme.frameType(holder));
+            AdvancementStats.count("tracked_done");
         } else if (gained) {
             Sounds.partDone(list.fraction());
         }

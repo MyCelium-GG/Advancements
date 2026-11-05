@@ -1,28 +1,31 @@
-# Better Armorstands
+# Advancements
 
-**Armor stands, done right.** All 13 poses from Bedrock Edition, arms on every stand, and a way to turn them that actually feels good.
+**Know exactly what an advancement still needs.** Click any advancement and see how to get it and what you are missing, then track it right above your hotbar.
 
-![All 13 armor stand poses side by side, some stands in iron, gold, diamond and netherite armor](https://wiki.mycelium-gg.org/betterarmorstands/img/poses.png)
+![The Advancements window over the advancements screen: Adventuring Time, How to get it, 29 of 56 done, and the biomes still needed](https://wiki.mycelium-gg.org/advancements/img/window.png)
 
-## Poses
-Sneak and right-click an armor stand with an empty hand to switch to the next pose: Solemn, Athena, Brandish, Honor, Entertain, Salute, Riposte, Zombie, Can-can, Hero and more. Or wire it up: a redstone signal next to a stand picks a pose by its strength.
+## Click any advancement
+Open your advancements (L) and click one. A small window in the same style explains it:
+- **How to get it**: written for every one of Minecraft's 126 advancements. What to do, where to go, and a tip where it helps.
+- **Your progress**, like 29 / 56.
+- **Still needed**: every biome you have not visited for Adventuring Time, every food you have not eaten for A Balanced Diet, every mob for Monsters Hunted, every cat, wolf and frog variant, every armor trim. Hover a part you have to see when you got it.
 
-![Two armor stands next to a redstone block and a redstone torch switched to the Solemn pose, the middle one keeps the default pose](https://wiki.mycelium-gg.org/betterarmorstands/img/stands.png)
+![Zombie Doctor: Hit a Zombie Villager with a Splash Potion of Weakness, then right-click it with a Golden Apple](https://wiki.mycelium-gg.org/advancements/img/explain.png)
 
-## Turn them with R
-Look at a stand, hold **R** and move your mouse. The stand turns smoothly, your camera stays still and the base plate stays put. Sneak for clean 15 degree steps.
+## Track it while you play
+Press **Overlay: On** and the advancement sits right above your hearts and food: its icon in the middle, the progress bar running out to both sides.
 
-## The small things
-- Every new armor stand has arms, like in Bedrock.
-- Shears remove the base plate, for clean displays. Click again to bring it back.
-- Sneak and look at a stand to see its pose and the next one.
-- A cleaner armor stand texture: warm oak with grain and a polished stone base.
+![The overlay above the hotbar tracking A Balanced Diet, 23/40](https://wiki.mycelium-gg.org/advancements/img/overlay.png)
 
-![Three armor stands without base plates in diamond, netherite and gold armor, posed Honor, Salute and Hero](https://wiki.mycelium-gg.org/betterarmorstands/img/display.png)
+Every time you get a new part, the frame pops, a gold ring and sparks burst out, the new item shows up and a chime plays that gets higher the closer you are. Finish it and you get a bigger celebration.
 
-![A vanilla armor stand without arms next to one with arms](https://wiki.mycelium-gg.org/betterarmorstands/img/arms.png)
+![The overlay animating after eating a melon slice](https://wiki.mycelium-gg.org/advancements/img/animation.png)
 
-## Server friendly
-The poses, arms and base plate work for every player on a server with the mod, even without the mod on their client. Players with the mod also get R, the pose preview and the new look.
+Prefer it out of the way? Put it in a corner as an advancement toast with the next missing parts below it.
 
-Requires [Mycel](https://www.curseforge.com/minecraft/mc-mods/mycel). Fabric, Forge and NeoForge, Minecraft 26.1 to 26.3. [Wiki](https://wiki.mycelium-gg.org/betterarmorstands/) · [Discord](https://discord.gg/UvQNsKWMp3)
+![The corner layout: Monsters Hunted with the next mobs to hunt](https://wiki.mycelium-gg.org/advancements/img/corner.png)
+
+## Works everywhere
+Client only. Works in singleplayer and on any server, vanilla servers included. Advancements from other mods and data packs work too.
+
+Requires [Mycel](https://www.curseforge.com/minecraft/mc-mods/mycel). Fabric, Forge and NeoForge, Minecraft 26.1 to 26.3. [Wiki](https://wiki.mycelium-gg.org/advancements/) · [Discord](https://discord.gg/UvQNsKWMp3)
