@@ -25,6 +25,7 @@ public final class AdvancementStats {
                 .string("tracker_position", () -> AdvancementsMod.TrackerPosition.current().id)
                 .bool("untrack_when_done", () -> AdvancementsMod.untrackWhenDone.get())
                 .bool("click_for_details", () -> AdvancementsMod.clickForDetails.get())
+                .bool("sounds", () -> AdvancementsMod.sounds.get())
                 .counters("tracked")
                 .errors("my.celium.org.advancements.")
                 .start();

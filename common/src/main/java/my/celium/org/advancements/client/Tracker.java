@@ -237,6 +237,7 @@ public final class Tracker {
         Checklist list = checklist(holder);
         trackedList = list;
         Set<String> done = doneSet(list);
+        boolean gained = false;
         if (holder.id().equals(lastDoneFor)) {
             for (Checklist.Entry e : list.entries()) {
                 if (e.done() && !lastDone.contains(e.criterion())) {
@@ -244,6 +245,7 @@ public final class Tracker {
                     flashIcon = e.icon();
                     flashTicks = FLASH_TICKS;
                     flashStart = net.minecraft.util.Util.getMillis();
+                    gained = true;
                 }
             }
         }
@@ -252,6 +254,9 @@ public final class Tracker {
         lastDoneFor = holder.id();
         if (list.complete() && !wasComplete && sameAdvancement) {
             completeStart = net.minecraft.util.Util.getMillis();
+            Sounds.advancementDone(Theme.frameType(holder));
+        } else if (gained) {
+            Sounds.partDone(list.fraction());
         }
         wasComplete = list.complete();
         if (list.complete() && AdvancementsMod.untrackWhenDone.get()) {

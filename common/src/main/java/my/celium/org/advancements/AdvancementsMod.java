@@ -28,6 +28,7 @@ public final class AdvancementsMod {
     public static ConfigValue<String> trackerPosition;
     public static ConfigValue<Boolean> untrackWhenDone;
     public static ConfigValue<Boolean> clickForDetails;
+    public static ConfigValue<Boolean> sounds;
     public static MycelConfig config;
 
     private AdvancementsMod() {
@@ -49,6 +50,8 @@ public final class AdvancementsMod {
                 "Stop tracking an advancement a few seconds after it is done.");
         clickForDetails = builder.booleanValue("clickForDetails", true,
                 "Click an advancement in the advancements screen to see what is done and what is missing.");
+        sounds = builder.booleanValue("sounds", true,
+                "Play a sound when a tracked advancement makes progress or gets done.");
         config = builder.build();
         AdvancementStats.start();
     }

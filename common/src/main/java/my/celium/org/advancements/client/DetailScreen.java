@@ -48,6 +48,7 @@ public final class DetailScreen extends Screen {
 
     public static void open(AdvancementHolder holder, @Nullable Screen parent) {
         MycelScreens.open(new DetailScreen(holder, parent));
+        Sounds.pageTurn();
     }
 
     // ------------------------------------------------------------------ layout
