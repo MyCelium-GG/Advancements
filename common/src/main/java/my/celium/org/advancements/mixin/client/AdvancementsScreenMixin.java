@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import com.mojang.blaze3d.platform.InputConstants;
+
 import my.celium.org.advancements.AdvancementsMod;
 import my.celium.org.advancements.client.AdvancementsScreenHooks;
 import net.minecraft.advancements.AdvancementHolder;
@@ -46,7 +48,7 @@ public abstract class AdvancementsScreenMixin extends Screen {
 
     @Inject(method = "mouseClicked", at = @At("HEAD"))
     private void advancements$press(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
-        advancements$pressX = event.button() == 0 ? event.x() : Double.NaN;
+        advancements$pressX = event.button() == InputConstants.MOUSE_BUTTON_LEFT ? event.x() : Double.NaN;
         advancements$pressY = event.y();
     }
 
@@ -54,7 +56,7 @@ public abstract class AdvancementsScreenMixin extends Screen {
     private void advancements$release(MouseButtonEvent event, CallbackInfoReturnable<Boolean> cir) {
         double pressX = advancements$pressX;
         advancements$pressX = Double.NaN;
-        if (event.button() != 0 || Double.isNaN(pressX) || !AdvancementsMod.isModEnabled()
+        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT || Double.isNaN(pressX) || !AdvancementsMod.isModEnabled()
                 || !AdvancementsMod.clickForDetails.get() || selectedTab == null) {
             return;
         }
