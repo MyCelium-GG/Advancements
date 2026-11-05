@@ -110,9 +110,22 @@ public final class Checklist {
         return new Checklist(holder, List.copyOf(entries), mode, done, total, complete);
     }
 
+    private record Look(Component name, ItemStack icon) {
+    }
+
+    /** Names and icons per criterion: looking them up every frame for the HUD is wasteful. */
+    private static final java.util.Map<String, Look> LOOKS = new java.util.concurrent.ConcurrentHashMap<>();
+
     private static Entry entry(String criterion, ItemStack fallback, @Nullable Instant obtained) {
-        return new Entry(criterion, name(criterion), icon(criterion, fallback), obtained != null,
+        Look look = LOOKS.computeIfAbsent(criterion + "|" + fallback.getItem(),
+                k -> new Look(name(criterion), icon(criterion, fallback)));
+        return new Entry(criterion, look.name(), look.icon(), obtained != null,
                 obtained == null || Instant.EPOCH.equals(obtained) ? null : obtained);
+    }
+
+    /** Forgets cached names, for example after the language changed. */
+    public static void clearCache() {
+        LOOKS.clear();
     }
 
     private static @Nullable Instant obtained(@Nullable AdvancementProgress progress, String criterion) {
@@ -289,6 +302,16 @@ public final class Checklist {
     public static Component description(AdvancementHolder holder) {
         DisplayInfo d = display(holder);
         return d != null ? Display.description(d) : Component.empty();
+    }
+
+    /** How to get a vanilla advancement, from this mod's lang files; null when there is none. */
+    public static @Nullable Component explanation(AdvancementHolder holder) {
+        Identifier id = holder.id();
+        String key = "advancementsmod.explain." + id.getPath().replace('/', '.');
+        if (!"minecraft".equals(id.getNamespace()) || !Language.getInstance().has(key)) {
+            return null;
+        }
+        return Component.translatable(key);
     }
 
     public static ItemStack icon(AdvancementHolder holder) {

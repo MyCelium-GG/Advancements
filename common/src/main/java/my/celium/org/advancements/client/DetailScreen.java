@@ -57,7 +57,7 @@ public final class DetailScreen extends Screen {
     }
 
     private int winW() {
-        return Math.min(width - 20, 250);
+        return Math.min(width - 20, 290);
     }
 
     private int inX() {
@@ -78,12 +78,31 @@ public final class DetailScreen extends Screen {
         return Math.max(26, descriptionLines().size() * 10 + 2);
     }
 
+    /** "How to get it", written for every vanilla advancement; empty for others. */
+    private List<FormattedCharSequence> howLines() {
+        Component how = Checklist.explanation(holder);
+        if (how == null) {
+            return List.of();
+        }
+        List<FormattedCharSequence> lines = font.split(how, inW() - PAD * 2);
+        return lines.size() > 7 ? lines.subList(0, 7) : lines;
+    }
+
+    private int howH() {
+        List<FormattedCharSequence> lines = howLines();
+        return lines.isEmpty() ? 0 : 12 + lines.size() * 10 + PAD;
+    }
+
+    private int howY() {
+        return headY() + headH() + PAD;
+    }
+
     private int visibleRows() {
         return hasList() ? Math.min(MAX_ROWS, Math.max(1, rows.size())) : 0;
     }
 
     private int winH() {
-        int h = Theme.TITLE + PAD + headH() + PAD + 12;
+        int h = Theme.TITLE + PAD + headH() + PAD + howH() + 12;
         if (hasList()) {
             h += 12 + visibleRows() * ROW_H;
         }
@@ -104,7 +123,7 @@ public final class DetailScreen extends Screen {
     }
 
     private int progressY() {
-        return headY() + headH() + PAD;
+        return howY() + howH();
     }
 
     private int listY() {
@@ -190,8 +209,20 @@ public final class DetailScreen extends Screen {
         Theme.frame(gfx, Theme.frameType(holder), list.complete(), Checklist.icon(holder), x, headY());
         int ty = headY() + Math.max(0, (headH() - descriptionLines().size() * 10) / 2) + 1;
         for (FormattedCharSequence line : descriptionLines()) {
-            gfx.text(font, line, x + 32, ty, Theme.WHITE);
+            gfx.text(font, line, x + 32, ty, 0xFFC6C6C6);
             ty += 10;
+        }
+
+        // How to get it.
+        List<FormattedCharSequence> how = howLines();
+        if (!how.isEmpty()) {
+            int hy = howY();
+            gfx.text(font, Component.translatable("advancementsmod.how"), x, hy, Theme.GOLD);
+            hy += 12;
+            for (FormattedCharSequence line : how) {
+                gfx.text(font, line, x, hy, Theme.WHITE);
+                hy += 10;
+            }
         }
 
         // How far along.

@@ -39,7 +39,10 @@ public final class TrackerHud {
         if (holder == null) {
             return;
         }
-        Checklist list = Tracker.checklist(holder);
+        Checklist list = Tracker.trackedChecklist();
+        if (list == null) {
+            return;
+        }
         if (TrackerPosition.current() == TrackerPosition.ABOVE_HOTBAR) {
             // Vanilla's held item name and action bar sit in the same spot; give them the room.
             if (!Tracker.itemNameShowing() && !Tracker.actionBarShowing()) {

@@ -26,7 +26,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 /**
- * Vanilla's advancements screen: a click on an advancement (not a drag) opens its details.
+ * Vanilla's advancements screen: a click on an advancement opens a small window explaining it.
  */
 @Mixin(AdvancementsScreen.class)
 public abstract class AdvancementsScreenMixin extends Screen {
@@ -36,31 +36,15 @@ public abstract class AdvancementsScreenMixin extends Screen {
     @Shadow
     private boolean isScrolling;
 
-    @Unique
-    private double advancements$pressX = Double.NaN;
-
-    @Unique
-    private double advancements$pressY;
-
     protected AdvancementsScreenMixin(Component title) {
         super(title);
     }
 
-    @Inject(method = "mouseClicked", at = @At("HEAD"))
-    private void advancements$press(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
-        advancements$pressX = event.button() == InputConstants.MOUSE_BUTTON_LEFT ? event.x() : Double.NaN;
-        advancements$pressY = event.y();
-    }
-
-    @Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
-    private void advancements$release(MouseButtonEvent event, CallbackInfoReturnable<Boolean> cir) {
-        double pressX = advancements$pressX;
-        advancements$pressX = Double.NaN;
-        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT || Double.isNaN(pressX) || !AdvancementsMod.isModEnabled()
+    /** A left click on an advancement opens its window right away; everything else is vanilla's. */
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    private void advancements$click(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
+        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT || !AdvancementsMod.isModEnabled()
                 || !AdvancementsMod.clickForDetails.get() || selectedTab == null) {
-            return;
-        }
-        if (Math.abs(event.x() - pressX) > 3 || Math.abs(event.y() - advancements$pressY) > 3) {
             return;
         }
         AdvancementHolder hit = advancements$hit(event.x(), event.y());

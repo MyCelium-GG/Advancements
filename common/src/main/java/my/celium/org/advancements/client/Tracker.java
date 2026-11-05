@@ -47,6 +47,8 @@ public final class Tracker {
     private static boolean loaded;
 
     private static @Nullable Identifier tracked;
+    private static @Nullable Checklist trackedList;
+    private static String language = "";
     private static String worldKey = "";
     private static Set<String> lastDone = Set.of();
     private static @Nullable Identifier lastDoneFor;
@@ -102,6 +104,16 @@ public final class Tracker {
     /** The tracked advancement, if this world has one and the server sent it. */
     public static @Nullable AdvancementHolder trackedHolder() {
         return holder(tracked);
+    }
+
+    /** The tracked advancement's checklist, worked out once per tick for the HUD. */
+    public static @Nullable Checklist trackedChecklist() {
+        AdvancementHolder holder = trackedHolder();
+        if (holder == null) {
+            return null;
+        }
+        Checklist list = trackedList;
+        return list != null && list.holder().equals(holder) ? list : checklist(holder);
     }
 
     public static @Nullable Component flash() {
@@ -187,11 +199,18 @@ public final class Tracker {
         }
         tickItemName(mc);
 
+        String lang = mc.options.languageCode;
+        if (!lang.equals(language)) {
+            language = lang;
+            Checklist.clearCache();
+        }
         AdvancementHolder holder = trackedHolder();
         if (holder == null) {
+            trackedList = null;
             return;
         }
         Checklist list = checklist(holder);
+        trackedList = list;
         Set<String> done = doneSet(list);
         if (holder.id().equals(lastDoneFor)) {
             for (Checklist.Entry e : list.entries()) {

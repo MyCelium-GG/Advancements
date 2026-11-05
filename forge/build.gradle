@@ -30,6 +30,10 @@ minecraft {
             if (project.hasProperty('quickPlay')) {
                 args '--quickPlayMultiplayer', project.property('quickPlay').toString()
             }
+            // -PquickPlaySingle=<world> opens that singleplayer world right after start-up.
+            if (project.hasProperty('quickPlaySingle')) {
+                args '--quickPlaySingleplayer', project.property('quickPlaySingle').toString()
+            }
         }
         register('server') {
             workingDir = layout.projectDirectory.dir('runs/server')
