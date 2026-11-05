@@ -322,6 +322,14 @@ public final class DetailScreen extends Screen {
     @Override
     public void onClose() {
         MycelScreens.open(parent);
+        // Vanilla's screen unhooks from the advancement data when this window opens and only hooks
+        // back in on its first init, so going back to it would leave its tabs dead. Hook it back in.
+        if (parent instanceof net.minecraft.client.gui.screens.advancements.AdvancementsScreen screen) {
+            var advancements = Tracker.advancements();
+            if (advancements != null) {
+                advancements.setListener(screen);
+            }
+        }
     }
 
     @Override

@@ -41,6 +41,8 @@ public final class Tracker {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final int FLASH_TICKS = 70;
     private static final int DONE_TICKS = 100;
+    /** How long a just-finished advancement stays on screen. */
+    public static final long DONE_MS = 6000;
     private static final int ITEM_NAME_TICKS = 50;
 
     private static final Map<String, String> SAVED = new LinkedHashMap<>();
@@ -56,6 +58,10 @@ public final class Tracker {
     private static @Nullable ItemStack flashIcon;
     private static int actionBarTicks;
     private static int flashTicks;
+    private static long flashStart;
+    private static long completeStart;
+    private static long trackStart;
+    private static boolean wasComplete;
     private static int doneTicks;
     private static ItemStack lastHeld = ItemStack.EMPTY;
     private static int itemNameTicks;
@@ -129,6 +135,21 @@ public final class Tracker {
         return flashTicks > 0 ? flashIcon : null;
     }
 
+    /** When the latest part got done (real time), 0 when none. */
+    public static long flashStart() {
+        return flashTicks > 0 ? flashStart : 0;
+    }
+
+    /** When the tracked advancement got finished while tracked (real time), 0 when not. */
+    public static long completeStart() {
+        return completeStart;
+    }
+
+    /** When tracking started (real time), for the entry animation. */
+    public static long trackStart() {
+        return trackStart;
+    }
+
     /** Vanilla just showed an action bar message (it stays about three seconds). */
     public static void actionBarShown() {
         actionBarTicks = 70;
@@ -147,6 +168,9 @@ public final class Tracker {
 
     public static void track(AdvancementHolder holder) {
         tracked = holder.id();
+        trackStart = net.minecraft.util.Util.getMillis();
+        completeStart = 0;
+        wasComplete = checklist(holder).complete();
         doneTicks = 0;
         flashTicks = 0;
         rememberDone(holder);
@@ -157,6 +181,7 @@ public final class Tracker {
 
     public static void untrack() {
         tracked = null;
+        completeStart = 0;
         flashTicks = 0;
         doneTicks = 0;
         save();
@@ -218,13 +243,22 @@ public final class Tracker {
                     flash = e.name();
                     flashIcon = e.icon();
                     flashTicks = FLASH_TICKS;
+                    flashStart = net.minecraft.util.Util.getMillis();
                 }
             }
         }
+        boolean sameAdvancement = holder.id().equals(lastDoneFor);
         lastDone = done;
         lastDoneFor = holder.id();
+        if (list.complete() && !wasComplete && sameAdvancement) {
+            completeStart = net.minecraft.util.Util.getMillis();
+        }
+        wasComplete = list.complete();
         if (list.complete() && AdvancementsMod.untrackWhenDone.get()) {
-            if (++doneTicks >= DONE_TICKS) {
+            // Stays for the celebration, then shrinks away (see TrackerHud.EXIT_MS).
+            if (completeStart > 0 && net.minecraft.util.Util.getMillis() - completeStart > DONE_MS) {
+                untrack();
+            } else if (completeStart == 0 && ++doneTicks >= DONE_TICKS) {
                 untrack();
             }
         } else {
