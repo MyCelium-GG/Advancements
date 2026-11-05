@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "my.celium.org.advancements.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "client.AdvancementTabAccessor",
+    "client.ClientAdvancementsAccessor",
+    "client.AdvancementsScreenMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
