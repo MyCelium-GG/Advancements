@@ -11,41 +11,46 @@ import org.jspecify.annotations.Nullable;
 
 import my.celium.org.advancements.AdvancementStats;
 import my.celium.org.client.MycelScreens;
-import my.celium.org.client.MycelTheme;
 import net.minecraft.advancements.AdvancementHolder;
+import net.minecraft.advancements.AdvancementNode;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 
 /**
- * One advancement up close: what it asks for, how far along you are, and every part of it, split
- * into missing and done (each biome, food, mob, ...). From here it can be tracked on the HUD.
+ * One advancement up close, in the look of vanilla's advancements window: the advancement's frame
+ * big at the top, its progress as an experience bar, and every part of it as a small advancement of
+ * its own, gold when done and blue when missing.
  */
-public final class DetailScreen extends PanelScreen {
-    private static final int CELL_H = 18;
-    private static final int CELL_MIN_W = 118;
+public final class DetailScreen extends Screen {
+    private static final int CELL_H = 28;
+    private static final int CELL_MIN_W = 148;
+    private static final int BUTTON_H = 20;
     private static final DateTimeFormatter DATE = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
             .withZone(ZoneId.systemDefault());
 
     private enum Filter { MISSING, DONE, ALL }
 
     private final AdvancementHolder holder;
+    private final @Nullable Screen parent;
     private Checklist list;
     private final List<Checklist.Entry> shown = new ArrayList<>();
     private Filter filter;
     private int scroll;
-    private EditBox search;
-    private FlatButton missingButton;
-    private FlatButton doneButton;
-    private FlatButton allButton;
-    private FlatButton trackButton;
+    private @Nullable EditBox search;
+    private Button missingButton;
+    private Button doneButton;
+    private Button allButton;
+    private Button trackButton;
     private int refreshTicks;
 
     public DetailScreen(AdvancementHolder holder, @Nullable Screen parent) {
-        super(Checklist.title(holder), parent);
+        super(Checklist.title(holder));
         this.holder = holder;
+        this.parent = parent;
         this.list = Tracker.checklist(holder);
         this.filter = list.complete() || list.missing().isEmpty() ? Filter.ALL : Filter.MISSING;
         AdvancementStats.count("details");
@@ -57,36 +62,83 @@ public final class DetailScreen extends PanelScreen {
 
     // ------------------------------------------------------------------ layout
 
-    private int infoY() {
-        return py() + TITLE_BAR + PAD;
+    private int winW() {
+        return Math.min(width - 16, 420);
     }
 
-    private int progressY() {
-        return infoY() + 28;
+    private int winH() {
+        int full = Math.min(height - 16 - BUTTON_H - 6, 300);
+        if (list.mode() == Checklist.Mode.SINGLE) {
+            // Frame, description, bar and one line of text: no list to make room for.
+            int lines = Math.min(2, font.split(Checklist.description(holder), winW() - Theme.BORDER * 2 - 40).size());
+            return Math.min(full, Theme.TITLE + 6 + 56 + lines * 10 + 14 + 5 + 6 + 18 + Theme.BORDER);
+        }
+        return full;
+    }
+
+    private int winX() {
+        return (width - winW()) / 2;
+    }
+
+    private int winY() {
+        return (height - winH() - BUTTON_H - 6) / 2;
+    }
+
+    private int inX() {
+        return winX() + Theme.BORDER;
+    }
+
+    private int inY() {
+        return winY() + Theme.TITLE;
+    }
+
+    private int inW() {
+        return winW() - Theme.BORDER * 2;
+    }
+
+    private int inBottom() {
+        return winY() + winH() - Theme.BORDER;
+    }
+
+    private int heroY() {
+        return inY() + 6;
+    }
+
+    private List<FormattedCharSequence> descriptionLines() {
+        List<FormattedCharSequence> lines = font.split(Checklist.description(holder), inW() - 40);
+        return lines.size() > 2 ? lines.subList(0, 2) : lines;
+    }
+
+    private int descriptionY() {
+        return heroY() + 52 + 4;
+    }
+
+    private int barY() {
+        return descriptionY() + descriptionLines().size() * 10 + 14;
     }
 
     private int filterY() {
-        return progressY() + 16;
+        return barY() + 5 + 6;
     }
 
     private int gridY() {
-        return filterY() + FlatButton.HEIGHT + 6;
+        return filterY() + BUTTON_H + 4;
     }
 
     private int gridH() {
-        return bottomRowY() - 6 - gridY();
+        return inBottom() - 2 - gridY();
     }
 
     private int columns() {
-        return Math.max(1, (innerW() - 4) / CELL_MIN_W);
+        return Math.max(1, (inW() - 8) / CELL_MIN_W);
     }
 
     private int cellW() {
-        return (innerW() - 4) / columns();
+        return (inW() - 8) / columns();
     }
 
     private int visibleRows() {
-        return Math.max(1, (gridH() - 4) / CELL_H);
+        return Math.max(1, gridH() / CELL_H);
     }
 
     private int rowsTotal() {
@@ -101,35 +153,38 @@ public final class DetailScreen extends PanelScreen {
 
     @Override
     protected void init() {
-        boolean listed = list.mode() != Checklist.Mode.SINGLE;
-        int x = innerX();
-        missingButton = new FlatButton(x, filterY(), 0, Component.empty(), false, () -> setFilter(Filter.MISSING));
-        doneButton = new FlatButton(x, filterY(), 0, Component.empty(), false, () -> setFilter(Filter.DONE));
-        allButton = new FlatButton(x, filterY(), 0, Component.empty(), false, () -> setFilter(Filter.ALL));
-        int searchW = Math.max(70, Math.min(140, innerW() / 3));
-        search = searchBox(innerX() + innerW() - searchW, filterY() + 2, searchW,
-                Component.translatable("advancementsmod.search"), this::refresh);
-        if (listed) {
-            addRenderableWidget(missingButton);
-            addRenderableWidget(doneButton);
-            addRenderableWidget(allButton);
+        if (list.mode() != Checklist.Mode.SINGLE) {
+            missingButton = addRenderableWidget(Button.builder(Component.empty(), b -> setFilter(Filter.MISSING))
+                    .bounds(inX() + 4, filterY(), 60, BUTTON_H).build());
+            doneButton = addRenderableWidget(Button.builder(Component.empty(), b -> setFilter(Filter.DONE))
+                    .bounds(inX() + 4, filterY(), 60, BUTTON_H).build());
+            allButton = addRenderableWidget(Button.builder(Component.empty(), b -> setFilter(Filter.ALL))
+                    .bounds(inX() + 4, filterY(), 60, BUTTON_H).build());
+            int searchW = Math.max(70, Math.min(130, inW() / 3));
+            search = new EditBox(font, inX() + inW() - 4 - searchW, filterY(), searchW, BUTTON_H,
+                    Component.translatable("advancementsmod.search"));
+            search.setHint(Component.translatable("advancementsmod.search"));
+            search.setResponder(text -> {
+                scroll = 0;
+                refresh();
+            });
             addRenderableWidget(search);
         }
 
-        int buttonW = (innerW() - 8) / 3;
-        trackButton = new FlatButton(innerX(), bottomRowY(), buttonW, Component.empty(), true, this::toggleTrack);
-        addRenderableWidget(trackButton);
-        addRenderableWidget(new FlatButton(innerX() + buttonW + 4, bottomRowY(), buttonW,
-                Component.translatable("advancementsmod.all"), false,
-                () -> {
-                    if (parent instanceof ListScreen) {
-                        onClose();
-                    } else {
-                        MycelScreens.open(new ListScreen(this));
-                    }
-                }));
-        addRenderableWidget(new FlatButton(innerX() + (buttonW + 4) * 2, bottomRowY(), innerW() - (buttonW + 4) * 2,
-                Component.translatable(parent != null ? "gui.back" : "gui.done"), false, this::onClose));
+        int y = winY() + winH() + 6;
+        int buttonW = Math.min(120, (winW() - 8) / 3);
+        int x = (width - buttonW * 3 - 8) / 2;
+        trackButton = addRenderableWidget(Button.builder(Component.empty(), b -> toggleTrack())
+                .bounds(x, y, buttonW, BUTTON_H).build());
+        addRenderableWidget(Button.builder(Component.translatable("advancementsmod.all"), b -> {
+            if (parent instanceof ListScreen) {
+                onClose();
+            } else {
+                MycelScreens.open(new ListScreen(this));
+            }
+        }).bounds(x + buttonW + 4, y, buttonW, BUTTON_H).build());
+        addRenderableWidget(Button.builder(Component.translatable(parent != null ? "gui.back" : "gui.done"),
+                b -> onClose()).bounds(x + (buttonW + 4) * 2, y, buttonW, BUTTON_H).build());
         refresh();
     }
 
@@ -163,26 +218,24 @@ public final class DetailScreen extends PanelScreen {
             shown.sort((a, b) -> Boolean.compare(a.done(), b.done()));
         }
         scroll = Math.min(scroll, maxScroll());
-        layoutFilters();
+        if (missingButton != null) {
+            int missing = list.missing().size();
+            int x = inX() + 4;
+            x = place(missingButton, x, Component.translatable("advancementsmod.filter.missing", missing), Filter.MISSING);
+            x = place(doneButton, x, Component.translatable("advancementsmod.filter.done", list.entries().size() - missing), Filter.DONE);
+            place(allButton, x, Component.translatable("advancementsmod.filter.all", list.entries().size()), Filter.ALL);
+        }
         trackButton.setMessage(Component.translatable(Tracker.isTracked(holder)
                 ? "advancementsmod.untrack" : "advancementsmod.track"));
     }
 
-    private void layoutFilters() {
-        int missing = list.missing().size();
-        int done = list.entries().size() - missing;
-        place(missingButton, innerX(), Component.translatable("advancementsmod.filter.missing", missing), filter == Filter.MISSING);
-        place(doneButton, missingButton.getX() + missingButton.getWidth() + 4,
-                Component.translatable("advancementsmod.filter.done", done), filter == Filter.DONE);
-        place(allButton, doneButton.getX() + doneButton.getWidth() + 4,
-                Component.translatable("advancementsmod.filter.all", list.entries().size()), filter == Filter.ALL);
-    }
-
-    private void place(FlatButton button, int x, Component label, boolean selected) {
+    private int place(Button button, int x, Component label, Filter f) {
         button.setMessage(label);
         button.setX(x);
-        button.setWidth(FlatButton.widthFor(font, label));
-        button.setPrimary(selected);
+        button.setWidth(font.width(label) + 14);
+        // The selected filter looks pressed, like a selected tab.
+        button.active = filter != f;
+        return x + button.getWidth() + 2;
     }
 
     @Override
@@ -197,119 +250,130 @@ public final class DetailScreen extends PanelScreen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor gfx, int mx, int my, float a) {
-        drawFrame(gfx, Component.translatable("advancementsmod.name").getString(),
-                Tracker.isTracked(holder) ? Component.translatable("advancementsmod.tracking").getString() : "");
-        drawInfo(gfx);
-        drawProgress(gfx);
+        drawWindow(gfx);
+        drawHero(gfx);
         if (list.mode() == Checklist.Mode.SINGLE) {
             drawSingle(gfx);
         } else {
-            drawField(gfx, search);
             drawGrid(gfx, mx, my);
         }
         super.extractRenderState(gfx, mx, my, a);
+        drawTooltip(gfx, mx, my);
     }
 
-    private void drawInfo(GuiGraphicsExtractor gfx) {
-        int x = innerX();
-        int y = infoY();
-        drawBox(gfx, x, y, 24, 24);
-        gfx.item(Checklist.icon(holder), x + 4, y + 4);
-        int tx = x + 30;
-        int room = innerW() - 30;
+    private @Nullable AdvancementHolder root() {
+        AdvancementNode node = Tracker.node(holder);
+        return node == null ? null : node.root().holder();
+    }
+
+    private void drawWindow(GuiGraphicsExtractor gfx) {
+        Theme.tiles(gfx, Theme.background(root()), inX(), inY(), inX() + inW(), inBottom());
+        gfx.fill(inX(), inY(), inX() + inW(), inBottom(), 0x55000000);
+        Theme.window(gfx, winX(), winY(), winW(), winH());
         String type = Checklist.typeName(holder).getString();
         int typeW = font.width(type);
-        gfx.text(font, MycelTheme.fit(font, Checklist.title(holder).getString(), room - typeW - 8), tx, y + 2,
-                Checklist.typeColor(holder));
-        gfx.text(font, type, x + innerW() - typeW, y + 2, MycelTheme.FAINT);
-        List<FormattedCharSequence> lines = font.split(Checklist.description(holder), room);
-        if (!lines.isEmpty()) {
-            gfx.text(font, lines.get(0), tx, y + 14, MycelTheme.DIM);
-        }
+        String title = Theme.fit(font, Checklist.title(holder).getString(), winW() - 24 - typeW);
+        gfx.text(font, title, winX() + 8, winY() + 6, Theme.TITLE_TEXT, false);
+        gfx.text(font, type, winX() + winW() - 8 - typeW, winY() + 6, Theme.TITLE_TEXT, false);
     }
 
-    private void drawProgress(GuiGraphicsExtractor gfx) {
-        int x = innerX();
-        int y = progressY();
-        String label;
-        if (list.complete()) {
-            label = Component.translatable("advancementsmod.done").getString();
-        } else if (list.mode() == Checklist.Mode.ALL) {
-            label = Component.translatable("advancementsmod.progress", list.doneCount(), list.total(),
-                    Math.round(list.fraction() * 100)).getString();
-        } else {
-            label = Component.translatable("advancementsmod.not_done").getString();
+    private void drawHero(GuiGraphicsExtractor gfx) {
+        int cx = inX() + inW() / 2;
+        Theme.bigFrame(gfx, Theme.frameType(holder), list.complete(), Checklist.icon(holder), cx - 26, heroY());
+        int y = descriptionY();
+        for (FormattedCharSequence line : descriptionLines()) {
+            gfx.centeredText(font, line, cx, y, Theme.WHITE);
+            y += 10;
         }
-        int labelW = font.width(label);
-        gfx.text(font, label, x + innerW() - labelW, y, list.complete() ? MycelTheme.GOOD : MycelTheme.TEXT);
-        TrackerHud.bar(gfx, x, y + 3, innerW() - labelW - 8, 3, list, holder);
+        String count;
+        if (list.complete()) {
+            count = Component.translatable("advancementsmod.done").getString();
+        } else if (list.mode() == Checklist.Mode.ALL) {
+            count = list.doneCount() + " / " + list.total();
+        } else {
+            count = Component.translatable("advancementsmod.not_done").getString();
+        }
+        Theme.outlined(gfx, font, count, cx - font.width(count) / 2, barY() - 10,
+                list.complete() ? Theme.GOLD : Theme.XP_GREEN);
+        Theme.xpBar(gfx, cx - 91, barY(), list.fraction());
     }
 
     private void drawSingle(GuiGraphicsExtractor gfx) {
-        int x = innerX();
-        int y = filterY();
-        drawBox(gfx, x, y, innerW(), bottomRowY() - 6 - y);
-        List<FormattedCharSequence> lines = font.split(Checklist.description(holder), innerW() - 12);
-        int ty = y + 6;
-        gfx.text(font, Component.translatable("advancementsmod.single"), x + 6, ty, MycelTheme.FAINT);
-        ty += 13;
-        for (FormattedCharSequence line : lines) {
-            gfx.text(font, line, x + 6, ty, MycelTheme.TEXT);
-            ty += 10;
-        }
+        int cx = inX() + inW() / 2;
+        gfx.centeredText(font, Component.translatable("advancementsmod.single.hint"), cx, filterY() + 6, Theme.GRAY);
     }
 
     private void drawGrid(GuiGraphicsExtractor gfx, int mx, int my) {
-        int x0 = innerX();
+        int x0 = inX() + 4;
         int y0 = gridY();
-        int h = gridH();
-        drawBox(gfx, x0, y0, innerW(), h);
         if (list.mode() == Checklist.Mode.ANY) {
             String note = Component.translatable("advancementsmod.any").getString();
-            gfx.text(font, note, x0 + innerW() - font.width(note) - 4, filterY() - 11, MycelTheme.FAINT);
+            gfx.text(font, note, inX() + inW() - 6 - font.width(note), barY() - 10, Theme.GRAY);
         }
         if (shown.isEmpty()) {
-            Component empty = Component.translatable(filter == Filter.MISSING && search.getValue().isBlank()
+            Component empty = Component.translatable(filter == Filter.MISSING && (search == null || search.getValue().isBlank())
                     ? "advancementsmod.empty.missing" : "advancementsmod.empty");
-            gfx.text(font, empty, x0 + 6, y0 + 6, filter == Filter.MISSING ? MycelTheme.GOOD : MycelTheme.DIM);
+            gfx.centeredText(font, empty, inX() + inW() / 2, y0 + 10, filter == Filter.MISSING ? Theme.GOLD : Theme.GRAY);
             return;
         }
         int cols = columns();
         int cw = cellW();
         int first = scroll * cols;
         int last = Math.min(shown.size(), first + visibleRows() * cols);
-        Checklist.Entry hovered = null;
         for (int i = first; i < last; i++) {
             Checklist.Entry e = shown.get(i);
-            int col = (i - first) % cols;
-            int row = (i - first) / cols;
-            int cx = x0 + 2 + col * cw;
-            int cy = y0 + 2 + row * CELL_H;
-            boolean hover = mx >= cx && mx < cx + cw && my >= cy && my < cy + CELL_H;
-            if (hover) {
-                gfx.fill(cx, cy, cx + cw - 1, cy + CELL_H, MycelTheme.BORDER);
-                hovered = e;
-            }
-            gfx.item(e.icon(), cx + 1, cy + 1);
-            String name = MycelTheme.fit(font, e.name().getString(), cw - 24);
-            gfx.text(font, name, cx + 20, cy + 5, e.done() ? MycelTheme.GOOD : MycelTheme.TEXT);
+            int cx = x0 + ((i - first) % cols) * cw;
+            int cy = y0 + ((i - first) / cols) * CELL_H;
+            boolean hover = mx >= cx && mx < cx + cw - 4 && my >= cy && my < cy + 26;
+            Theme.ribbon(gfx, e.done(), cx + 13, cy + 3, cw - 17, 20);
+            Theme.frame(gfx, "task", e.done(), e.icon(), cx, cy);
+            String name = Theme.fit(font, e.name().getString(), cw - 40);
+            gfx.text(font, name, cx + 31, cy + 9, hover ? 0xFFFFFFA0 : Theme.WHITE);
         }
-        scrollbar(gfx, x0 + innerW(), y0, h, scroll, maxScroll(), visibleRows(), rowsTotal());
-        if (hovered != null) {
-            List<Component> tip = new ArrayList<>();
-            tip.add(hovered.name());
-            if (hovered.done()) {
-                tip.add(hovered.obtained() != null
-                        ? MycelTheme.colored(Component.translatable("advancementsmod.done_on",
-                                DATE.format(hovered.obtained())).getString(), MycelTheme.GOOD)
-                        : MycelTheme.colored(Component.translatable("advancementsmod.done").getString(), MycelTheme.GOOD));
-            } else {
-                tip.add(MycelTheme.colored(Component.translatable("advancementsmod.missing").getString(), MycelTheme.WARN));
-            }
-            tip.add(MycelTheme.colored(hovered.criterion(), MycelTheme.FAINT));
-            gfx.setComponentTooltipForNextFrame(font, tip, mx, my);
-        }
+        drawScrollbar(gfx, inX() + inW() - 4, y0, visibleRows() * CELL_H);
     }
+
+    private void drawScrollbar(GuiGraphicsExtractor gfx, int right, int top, int h) {
+        int max = maxScroll();
+        if (max <= 0) {
+            return;
+        }
+        int thumb = Math.max(12, h * visibleRows() / Math.max(1, rowsTotal()));
+        int y = top + (h - thumb) * scroll / max;
+        gfx.fill(right - 3, top, right, top + h, 0x66000000);
+        gfx.fill(right - 3, y, right, y + thumb, 0xFFC6C6C6);
+    }
+
+    private void drawTooltip(GuiGraphicsExtractor gfx, int mx, int my) {
+        if (list.mode() == Checklist.Mode.SINGLE) {
+            return;
+        }
+        int cols = columns();
+        int cw = cellW();
+        int x0 = inX() + 4;
+        int y0 = gridY();
+        if (mx < x0 || my < y0 || mx >= x0 + cols * cw || my >= y0 + visibleRows() * CELL_H) {
+            return;
+        }
+        int index = (scroll + (my - y0) / CELL_H) * cols + (mx - x0) / cw;
+        if (index >= shown.size() || (my - y0) % CELL_H >= 26) {
+            return;
+        }
+        Checklist.Entry e = shown.get(index);
+        List<Component> tip = new ArrayList<>();
+        tip.add(e.name());
+        if (e.done()) {
+            tip.add(e.obtained() != null
+                    ? Component.translatable("advancementsmod.done_on", DATE.format(e.obtained())).withColor(Theme.GOLD)
+                    : Component.translatable("advancementsmod.done").withColor(Theme.GOLD));
+        } else {
+            tip.add(Component.translatable("advancementsmod.missing").withColor(0xFF55C8FF));
+        }
+        tip.add(Component.literal(e.criterion()).withColor(0xFF808080));
+        gfx.setComponentTooltipForNextFrame(font, tip, mx, my);
+    }
+
+    // ------------------------------------------------------------------ input
 
     @Override
     public boolean mouseScrolled(double x, double y, double scrollX, double scrollY) {
@@ -318,5 +382,15 @@ public final class DetailScreen extends PanelScreen {
             return true;
         }
         return super.mouseScrolled(x, y, scrollX, scrollY);
+    }
+
+    @Override
+    public void onClose() {
+        MycelScreens.open(parent);
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return true;
     }
 }

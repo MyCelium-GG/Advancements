@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "client": [
+    "client.ActionBarMixin",
     "client.AdvancementTabAccessor",
     "client.ClientAdvancementsAccessor",
     "client.AdvancementsScreenMixin"

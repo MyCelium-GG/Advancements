@@ -1,8 +1,12 @@
 package my.celium.org.advancements.client;
 
+import java.util.Optional;
+
 import net.minecraft.advancements.AdvancementType;
 import net.minecraft.advancements.DisplayInfo;
+import net.minecraft.core.ClientAsset;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 /** DisplayInfo access for Minecraft 26.3, where it became a record. */
@@ -28,5 +32,9 @@ final class Display {
 
     static boolean hidden(DisplayInfo d) {
         return d.hidden();
+    }
+
+    static Optional<Identifier> background(DisplayInfo d) {
+        return d.background().map(ClientAsset.ResourceTexture::texturePath);
     }
 }

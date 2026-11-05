@@ -2,15 +2,13 @@ package my.celium.org.advancements.client;
 
 import java.util.List;
 
-import org.joml.Matrix3x2fStack;
-
 import my.celium.org.advancements.AdvancementsMod;
 import my.celium.org.advancements.AdvancementsMod.TrackerPosition;
-import my.celium.org.client.MycelTheme;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -20,14 +18,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * Draws the tracked advancement: a slim line with a progress bar right above the hearts and food
- * (the width of the hotbar), or a small card in a top corner listing what is still missing.
+ * Draws the tracked advancement. Above the hotbar: the advancement's frame in the middle with the
+ * progress bar running out to both sides, the title on the left and the count on the right. In a
+ * top corner: an advancement toast with what is still missing below it.
  */
 public final class TrackerHud {
-    private static final int BAR_W = 182;
-    private static final int CARD_W = 160;
+    private static final int WIDTH = 182;
+    private static final int FRAME = 26;
     private static final int CARD_LINES = 4;
-    private static final int TRACK = 0x99000000;
 
     private TrackerHud() {
     }
@@ -43,37 +41,42 @@ public final class TrackerHud {
         }
         Checklist list = Tracker.checklist(holder);
         if (TrackerPosition.current() == TrackerPosition.ABOVE_HOTBAR) {
-            if (!Tracker.itemNameShowing()) {
-                drawLine(gfx, mc, holder, list);
+            // Vanilla's held item name and action bar sit in the same spot; give them the room.
+            if (!Tracker.itemNameShowing() && !Tracker.actionBarShowing()) {
+                drawCenter(gfx, mc, holder, list);
             }
         } else {
-            drawCard(gfx, mc, holder, list, TrackerPosition.current() == TrackerPosition.TOP_RIGHT);
+            drawToast(gfx, mc, holder, list, TrackerPosition.current() == TrackerPosition.TOP_RIGHT);
         }
     }
 
     // ------------------------------------------------------------------ above the hotbar
 
-    private static void drawLine(GuiGraphicsExtractor gfx, Minecraft mc, AdvancementHolder holder, Checklist list) {
+    private static void drawCenter(GuiGraphicsExtractor gfx, Minecraft mc, AdvancementHolder holder, Checklist list) {
         Font font = mc.font;
-        int x0 = gfx.guiWidth() / 2 - BAR_W / 2;
-        int bottom = gfx.guiHeight() - statusHeight(mc) - 2;
-        int barY = bottom - 2;
-        int textY = barY - 10;
+        int cx = gfx.guiWidth() / 2;
+        int frameX = cx - FRAME / 2;
+        int frameY = gfx.guiHeight() - statusHeight(mc) - 1 - FRAME;
+        int barY = frameY + FRAME / 2 - 1;
+        int left = cx - WIDTH / 2;
+        int sideW = WIDTH / 2 - FRAME / 2 - 2;
 
-        String count = countText(list);
-        int countW = font.width(count);
-        smallIcon(gfx, Checklist.icon(holder), x0, textY);
+        // The bar runs from the left end to the right end, passing behind the frame.
+        float fraction = list.fraction();
+        int filled = Math.round(sideW * 2 * fraction);
+        Theme.slimBar(gfx, left, barY, sideW, 2, Math.min(1f, filled / (float) sideW), list.complete());
+        Theme.slimBar(gfx, cx + FRAME / 2 + 2, barY, sideW, 2, Math.max(0f, (filled - sideW) / (float) sideW), list.complete());
+
         Component flash = Tracker.flash();
-        int titleRoom = BAR_W - 11 - countW - 6;
-        if (flash != null) {
-            String text = MycelTheme.fit(font, "+ " + flash.getString(), titleRoom);
-            gfx.text(font, text, x0 + 11, textY, MycelTheme.GOOD);
-        } else {
-            String title = MycelTheme.fit(font, Checklist.title(holder).getString(), titleRoom);
-            gfx.text(font, title, x0 + 11, textY, MycelTheme.HEADING);
-        }
-        gfx.text(font, count, x0 + BAR_W - countW, textY, list.complete() ? MycelTheme.GOOD : MycelTheme.TEXT);
-        bar(gfx, x0, barY, BAR_W, 2, list, holder);
+        ItemStack icon = flash != null && Tracker.flashIcon() != null ? Tracker.flashIcon() : Checklist.icon(holder);
+        Theme.frame(gfx, Theme.frameType(holder), list.complete() || flash != null, icon, frameX, frameY);
+
+        int textY = barY - 11;
+        String title = flash != null ? "+ " + flash.getString() : Checklist.title(holder).getString();
+        title = Theme.fit(font, title, 150);
+        gfx.text(font, title, frameX - 3 - font.width(title), textY, flash != null ? Theme.GOLD : Theme.WHITE);
+        String count = countText(list);
+        Theme.outlined(gfx, font, count, frameX + FRAME + 3, textY, list.complete() ? Theme.GOLD : Theme.XP_GREEN);
     }
 
     /**
@@ -102,38 +105,35 @@ public final class TrackerHud {
         return Math.max(left, right);
     }
 
-    // ------------------------------------------------------------------ corner card
+    // ------------------------------------------------------------------ corner toast
 
-    private static void drawCard(GuiGraphicsExtractor gfx, Minecraft mc, AdvancementHolder holder, Checklist list, boolean right) {
+    private static void drawToast(GuiGraphicsExtractor gfx, Minecraft mc, AdvancementHolder holder, Checklist list, boolean right) {
         Font font = mc.font;
+        int x0 = right ? gfx.guiWidth() - 160 - 4 : 4;
+        int y0 = 4;
+        gfx.blitSprite(RenderPipelines.GUI_TEXTURED, Theme.TOAST, x0, y0, 160, 32);
+        Component flash = Tracker.flash();
+        ItemStack icon = flash != null && Tracker.flashIcon() != null ? Tracker.flashIcon() : Checklist.icon(holder);
+        gfx.item(icon, x0 + 8, y0 + 8);
+        String title = flash != null ? "+ " + flash.getString() : Checklist.title(holder).getString();
+        gfx.text(font, Theme.fit(font, title, 124), x0 + 30, y0 + 7,
+                flash != null ? Theme.GOLD : Checklist.typeColor(holder), false);
+        String count = countText(list);
+        gfx.text(font, count, x0 + 30, y0 + 18, Theme.WHITE, false);
+        int barX = x0 + 34 + font.width(count);
+        Theme.slimBar(gfx, barX, y0 + 21, x0 + 150 - barX, 2, list.fraction(), list.complete());
+
         List<Checklist.Entry> missing = list.mode() == Checklist.Mode.ALL ? list.missing() : List.of();
         int shown = Math.min(CARD_LINES, missing.size());
-        boolean more = missing.size() > shown;
-        int h = 6 + 16 + 4 + 2 + 4 + shown * 10 + (more ? 10 : 0) + (shown > 0 ? 2 : 0);
-        int x0 = right ? gfx.guiWidth() - CARD_W - 4 : 4;
-        int y0 = 4;
-        gfx.fill(x0, y0, x0 + CARD_W, y0 + h, 0xB0101010);
-        gfx.fill(x0, y0, x0 + 2, y0 + h, Checklist.typeColor(holder));
-
-        int tx = x0 + 6;
-        gfx.item(Checklist.icon(holder), tx, y0 + 5);
-        String count = countText(list);
-        int countW = font.width(count);
-        Component flash = Tracker.flash();
-        String title = flash != null ? "+ " + flash.getString() : Checklist.title(holder).getString();
-        gfx.text(font, MycelTheme.fit(font, title, CARD_W - 30 - countW - 6), tx + 20, y0 + 9,
-                flash != null ? MycelTheme.GOOD : MycelTheme.HEADING);
-        gfx.text(font, count, x0 + CARD_W - 5 - countW, y0 + 9, list.complete() ? MycelTheme.GOOD : MycelTheme.TEXT);
-        int barY = y0 + 6 + 16 + 3;
-        bar(gfx, tx, barY, CARD_W - 11, 2, list, holder);
-
-        int y = barY + 6;
+        int y = y0 + 36;
         for (int i = 0; i < shown; i++) {
-            gfx.text(font, MycelTheme.fit(font, missing.get(i).name().getString(), CARD_W - 14), tx, y, MycelTheme.DIM);
+            Checklist.Entry e = missing.get(i);
+            Theme.smallIcon(gfx, e.icon(), x0 + 4, y);
+            gfx.text(font, Theme.fit(font, e.name().getString(), 140), x0 + 15, y, Theme.WHITE);
             y += 10;
         }
-        if (more) {
-            gfx.text(font, Component.translatable("advancementsmod.hud.more", missing.size() - shown), tx, y, MycelTheme.FAINT);
+        if (missing.size() > shown) {
+            gfx.text(font, Component.translatable("advancementsmod.hud.more", missing.size() - shown), x0 + 15, y, Theme.GRAY);
         }
     }
 
@@ -147,23 +147,5 @@ public final class TrackerHud {
             return list.doneCount() + "/" + list.total();
         }
         return Component.translatable("advancementsmod.not_done").getString();
-    }
-
-    static void bar(GuiGraphicsExtractor gfx, int x, int y, int w, int h, Checklist list, AdvancementHolder holder) {
-        gfx.fill(x, y, x + w, y + h, TRACK);
-        int filled = Math.round(w * list.fraction());
-        if (filled > 0) {
-            gfx.fill(x, y, x + filled, y + h, list.complete() ? MycelTheme.GOOD : Checklist.typeColor(holder));
-        }
-    }
-
-    /** An item drawn at half size (8x8). */
-    static void smallIcon(GuiGraphicsExtractor gfx, ItemStack stack, int x, int y) {
-        Matrix3x2fStack pose = gfx.pose();
-        pose.pushMatrix();
-        pose.translate(x, y);
-        pose.scale(0.5f, 0.5f);
-        gfx.item(stack, 0, 0);
-        pose.popMatrix();
     }
 }

@@ -51,6 +51,8 @@ public final class Tracker {
     private static Set<String> lastDone = Set.of();
     private static @Nullable Identifier lastDoneFor;
     private static @Nullable Component flash;
+    private static @Nullable ItemStack flashIcon;
+    private static int actionBarTicks;
     private static int flashTicks;
     private static int doneTicks;
     private static ItemStack lastHeld = ItemStack.EMPTY;
@@ -80,6 +82,11 @@ public final class Tracker {
         return ((ClientAdvancementsAccessor) adv).advancements$progress();
     }
 
+    public static net.minecraft.advancements.@Nullable AdvancementNode node(AdvancementHolder holder) {
+        ClientAdvancements adv = advancements();
+        return adv == null ? null : tree(adv).get(holder);
+    }
+
     static AdvancementTree tree(ClientAdvancements adv) {
         return ((ClientAdvancementsAccessor) adv).advancements$tree();
     }
@@ -104,6 +111,19 @@ public final class Tracker {
     /** Ticks left of the flash, for fading. */
     public static int flashTicks() {
         return flashTicks;
+    }
+
+    public static @Nullable ItemStack flashIcon() {
+        return flashTicks > 0 ? flashIcon : null;
+    }
+
+    /** Vanilla just showed an action bar message (it stays about three seconds). */
+    public static void actionBarShown() {
+        actionBarTicks = 70;
+    }
+
+    public static boolean actionBarShowing() {
+        return actionBarTicks > 0;
     }
 
     /** Whether vanilla is showing the held item's name above the hotbar right now. */
@@ -162,6 +182,9 @@ public final class Tracker {
         if (flashTicks > 0) {
             flashTicks--;
         }
+        if (actionBarTicks > 0) {
+            actionBarTicks--;
+        }
         tickItemName(mc);
 
         AdvancementHolder holder = trackedHolder();
@@ -174,6 +197,7 @@ public final class Tracker {
             for (Checklist.Entry e : list.entries()) {
                 if (e.done() && !lastDone.contains(e.criterion())) {
                     flash = e.name();
+                    flashIcon = e.icon();
                     flashTicks = FLASH_TICKS;
                 }
             }
