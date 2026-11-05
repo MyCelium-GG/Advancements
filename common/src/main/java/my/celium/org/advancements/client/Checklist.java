@@ -308,11 +308,6 @@ public final class Checklist {
         return "challenge".equals(Display.type(d).getSerializedName()) ? CHALLENGE_COLOR : TASK_COLOR;
     }
 
-    public static Component typeName(AdvancementHolder holder) {
-        DisplayInfo d = display(holder);
-        return d != null ? Component.translatable("advancementsmod.type." + Display.type(d).getSerializedName()) : Component.empty();
-    }
-
     public static boolean hidden(AdvancementHolder holder) {
         DisplayInfo d = display(holder);
         return d == null || Display.hidden(d);

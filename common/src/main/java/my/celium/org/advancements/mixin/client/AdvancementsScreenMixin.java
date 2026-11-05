@@ -24,8 +24,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 /**
- * Vanilla's advancements screen: a click on an advancement (not a drag) opens its details, and a
- * button below the window opens the list of all advancements.
+ * Vanilla's advancements screen: a click on an advancement (not a drag) opens its details.
  */
 @Mixin(AdvancementsScreen.class)
 public abstract class AdvancementsScreenMixin extends Screen {
@@ -43,13 +42,6 @@ public abstract class AdvancementsScreenMixin extends Screen {
 
     protected AdvancementsScreenMixin(Component title) {
         super(title);
-    }
-
-    @Inject(method = "init", at = @At("TAIL"))
-    private void advancements$addListButton(CallbackInfo ci) {
-        if (AdvancementsMod.isModEnabled()) {
-            addRenderableWidget(AdvancementsScreenHooks.listButton(this, width, height));
-        }
     }
 
     @Inject(method = "mouseClicked", at = @At("HEAD"))
