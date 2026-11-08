@@ -1,63 +1,33 @@
-# Advancements
+<p align="center">
+  <img src="https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/header.svg" alt="Advancements: know exactly what an advancement still needs" width="100%">
+</p>
+
+<p align="center">
+  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement"><img src="https://img.shields.io/curseforge/dt/1785352?style=flat-square&logo=curseforge&logoColor=white&label=downloads&labelColor=2a2427&color=e0483c" alt="CurseForge downloads"></a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement/files"><img src="https://img.shields.io/badge/Minecraft-26.1%20%E2%80%93%2026.3-655a60?style=flat-square&labelColor=2a2427" alt="Minecraft 26.1 to 26.3"></a>
+  <img src="https://img.shields.io/badge/loaders-Fabric%20%C2%B7%20Forge%20%C2%B7%20NeoForge-655a60?style=flat-square&labelColor=2a2427" alt="Fabric, Forge, NeoForge">
+  <img src="https://img.shields.io/badge/side-client%20only-655a60?style=flat-square&labelColor=2a2427" alt="Client only">
+  <img src="https://img.shields.io/badge/Java-25-655a60?style=flat-square&logo=openjdk&logoColor=white&labelColor=2a2427" alt="Java 25">
+  <a href="https://www.curseforge.com/minecraft/mc-mods/mycel"><img src="https://img.shields.io/badge/requires-Mycel-e0483c?style=flat-square&logo=curseforge&logoColor=white&labelColor=2a2427" alt="Requires Mycel"></a>
+  <a href="https://wiki.mycelium-gg.org/advancements/"><img src="https://img.shields.io/badge/docs-wiki-655a60?style=flat-square&labelColor=2a2427" alt="Docs on the wiki"></a>
+  <a href="https://github.com/MyCelium-GG/Advancements/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MyCelium-GG/Advancements?style=flat-square&labelColor=2a2427&color=655a60" alt="MIT license"></a>
+</p>
 
 ![About the mod](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/about-the-mod.svg)
 
-Vanilla tells you "Discover every biome", but not which ones you are missing.
-Advancements does. Click any advancement in the advancements screen and a small
-window explains **how to get it**, shows how far along you are and lists
-exactly **what is still missing**: every biome, food, mob, cat or wolf variant.
-Turn on its **overlay** and follow it while you play, right above your hotbar.
-
-![The Advancements window over vanilla's advancements screen: Adventuring Time, How to get it, 29 of 56 done, and the biomes still needed](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/window.png)
-
-Built on [Mycel](https://github.com/MyCelium-GG/MyCel-Lib) (`my.celium.org`), the shared
-core for the MyCelium ecosystem.
-
-| | |
-|---|---|
-| Mod id | `advancements` |
-| Minecraft | **26.3**, **26.2**, **26.1** (26.1-26.1.2) · Java **25** |
-| Loaders | Fabric, Forge, NeoForge |
-| Side | Client only: works in singleplayer and on any server, vanilla ones included |
+![Vanilla won't tell you which biomes you are missing. Click any advancement and a small window shows how to get it, how far along you are and exactly what is still missing. Then track it above your hotbar.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/about.svg)
 
 ![How it works](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/how-it-works.svg)
 
-- **Click an advancement** in the advancements screen (**L**) to open its
-  window. Dragging the tree and switching category tabs work as before.
-- **How to get it**: a written explanation for every one of Minecraft's 126
-  advancements (what to do, where, and a tip where one helps). Advancements
-  from other mods and data packs show their own description.
-- **Still needed**: every missing part with its icon, then the parts you have
-  in gold. Hover one you have to see when you got it.
-- **Overlay**: turn it on for one advancement per world or server. It sits
-  above your hearts and food with the advancement's frame in the middle and
-  its progress bar to both sides, and steps aside for the held item's name and
-  action bar messages. Or put it in a top corner as an advancement toast.
-- **Animation and sounds**: every new part pops the frame, bursts a gold ring
-  and sparks, fades in `+ Melon Slice` and plays a chime that climbs in pitch.
-  Finishing gets a bigger celebration, then the overlay shrinks away.
+![Click any advancement (L) to open its window. How to get it: written help for all 126 vanilla advancements. Still needed: every missing biome, food, mob and variant. Overlay: track one advancement per world above your hotbar or in a top corner. Animations and sounds for every new part. Works anywhere: client only, any server.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/features.svg)
 
 ![Screenshots](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/screenshots.svg)
 
-![Zombie Doctor: how to get it](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/explain.png)
-
-![The overlay above the hotbar tracking A Balanced Diet, 23/40](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/overlay.png)
-
-![The overlay animating after eating a melon slice](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/animation.png)
-
-![The corner layout: Monsters Hunted with the next mobs to hunt](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/corner.png)
-
-![Anonymous stats](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/anonymous-stats.svg)
-
-Advancements sends anonymous stats (how often windows are opened, which
-advancements get the overlay, the settings, and errors in its own code) to its
-FastStats project through Mycel. It follows Mycel's choice exactly: the
-one-time screen in your own game. Details:
-https://wiki.mycelium-gg.org/privacy#stats-advancements
+![Screenshots: the How to get it window for Zombie Doctor, the overlay above the hotbar tracking A Balanced Diet, the animation after eating a melon slice, and the corner layout for Monsters Hunted](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/gallery.svg)
 
 ![Configuration](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/configuration.svg)
 
-Settings live in `config/advancements.json`.
+`config/advancements.json`, reload live with `/mycel reload advancements`.
 
 | Key | Default | Meaning |
 |---|---|---|
@@ -68,8 +38,13 @@ Settings live in `config/advancements.json`.
 | `clickForDetails` | `true` | Clicking an advancement opens its window. |
 | `sounds` | `true` | Sounds for progress, finishing and opening the window. |
 
-Reload live with `/mycel reload advancements`. Which advancement has the
-overlay is saved per world and server in `config/advancements-tracked.json`.
+Which advancement has the overlay is saved per world and server in `config/advancements-tracked.json`.
+
+![Anonymous stats](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/anonymous-stats.svg)
+
+Anonymous usage stats (windows opened, which advancements get the overlay, settings, and errors in this mod's
+code) go to its FastStats project through Mycel, following Mycel's one-time choice in your game.
+[Details](https://wiki.mycelium-gg.org/privacy#stats-advancements).
 
 ![Building](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/building.svg)
 
