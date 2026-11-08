@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/header.svg" alt="Advancements: know exactly what an advancement still needs" width="100%">
+  <img src="https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/header.svg?v=202611081804" alt="Advancements: know exactly what an advancement still needs" width="100%">
 </p>
 
 <p align="center">
@@ -13,22 +13,22 @@
   <a href="https://github.com/MyCelium-GG/Advancements/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MyCelium-GG/Advancements?style=flat-square&labelColor=0b0b0b&color=0b0b0b" alt="MIT license"></a>
 </p>
 
-![About the mod](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/about-the-mod.svg)
+![About the mod](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/about-the-mod.svg?v=202611081804)
 
-![Vanilla won't tell you which biomes you are missing. Click any advancement and a small window shows how to get it, how far along you are and exactly what is still missing. Then track it above your hotbar.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/about.svg)
+![Vanilla won't tell you which biomes you are missing. Click any advancement and a small window shows how to get it, how far along you are and exactly what is still missing. Then track it above your hotbar.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/about.svg?v=202611081804)
 
-![How it works](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/how-it-works.svg)
+![How it works](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/how-it-works.svg?v=202611081804)
 
-![Click any advancement (L) to open its window. How to get it: written help for all 126 vanilla advancements. Still needed: every missing biome, food, mob and variant. Overlay: track one advancement per world above your hotbar or in a top corner. Animations and sounds for every new part. Works anywhere: client only, any server.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/features.svg)
+![Click any advancement (L) to open its window. How to get it: written help for all 126 vanilla advancements. Still needed: every missing biome, food, mob and variant. Overlay: track one advancement per world above your hotbar or in a top corner. Animations and sounds for every new part. Works anywhere: client only, any server.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/features.svg?v=202611081804)
 
-![Screenshots](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/screenshots.svg)
+![Screenshots](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/screenshots.svg?v=202611081804)
 
-![Screenshots: the How to get it window for Zombie Doctor, the overlay above the hotbar tracking A Balanced Diet, the animation after eating a melon slice, and the corner layout for Monsters Hunted](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/gallery.svg)
+![Screenshots: the How to get it window for Zombie Doctor, the overlay above the hotbar tracking A Balanced Diet, the animation after eating a melon slice, and the corner layout for Monsters Hunted](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/gallery.svg?v=202611081804)
 
-![Configuration](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/configuration.svg)
+![Configuration](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/configuration.svg?v=202611081804)
 
-![Settings in config/advancements.json, reload with /mycel reload advancements. enabled (true): master switch. showTracker (true): show the overlay. trackerPosition (above_hotbar): above_hotbar, top_left or top_right. untrackWhenDone (true): drop the overlay a few seconds after the advancement is done. clickForDetails (true): clicking an advancement opens its window. sounds (true): sounds for progress, finishing and opening the window.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/config.svg)
+![Settings in config/advancements.json, reload with /mycel reload advancements. enabled (true): master switch. showTracker (true): show the overlay. trackerPosition (above_hotbar): above_hotbar, top_left or top_right. untrackWhenDone (true): drop the overlay a few seconds after the advancement is done. clickForDetails (true): clicking an advancement opens its window. sounds (true): sounds for progress, finishing and opening the window.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/config.svg?v=202611081804)
 
-![Anonymous stats](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/anonymous-stats.svg)
+![Anonymous stats](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/anonymous-stats.svg?v=202611081804)
 
-<a href="https://wiki.mycelium-gg.org/privacy#stats-advancements"><img src="https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/stats.svg" alt="Advancements sends anonymous stats to its FastStats project through Mycel: how often windows are opened, which advancements get the overlay, the settings, and errors in its own code. It follows Mycel's choice exactly: the one-time screen in your own game." width="100%"></a>
+<a href="https://wiki.mycelium-gg.org/privacy#stats-advancements"><img src="https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/stats.svg?v=202611081804" alt="Advancements sends anonymous stats to its FastStats project through Mycel: how often windows are opened, which advancements get the overlay, the settings, and errors in its own code. It follows Mycel's choice exactly: the one-time screen in your own game." width="100%"></a>
