@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement"><img src="https://img.shields.io/curseforge/dt/1785352?style=flat-square&logo=curseforge&logoColor=white&label=downloads&labelColor=2a2427&color=e0483c" alt="CurseForge downloads"></a>
-  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement/files"><img src="https://img.shields.io/badge/Minecraft-26.1%20%E2%80%93%2026.3-655a60?style=flat-square&labelColor=2a2427" alt="Minecraft 26.1 to 26.3"></a>
-  <img src="https://img.shields.io/badge/loaders-Fabric%20%C2%B7%20Forge%20%C2%B7%20NeoForge-655a60?style=flat-square&labelColor=2a2427" alt="Fabric, Forge, NeoForge">
-  <img src="https://img.shields.io/badge/side-client%20only-655a60?style=flat-square&labelColor=2a2427" alt="Client only">
-  <img src="https://img.shields.io/badge/Java-25-655a60?style=flat-square&logo=openjdk&logoColor=white&labelColor=2a2427" alt="Java 25">
-  <a href="https://www.curseforge.com/minecraft/mc-mods/mycel"><img src="https://img.shields.io/badge/requires-Mycel-e0483c?style=flat-square&logo=curseforge&logoColor=white&labelColor=2a2427" alt="Requires Mycel"></a>
-  <a href="https://wiki.mycelium-gg.org/advancements/"><img src="https://img.shields.io/badge/docs-wiki-655a60?style=flat-square&labelColor=2a2427" alt="Docs on the wiki"></a>
-  <a href="https://github.com/MyCelium-GG/Advancements/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MyCelium-GG/Advancements?style=flat-square&labelColor=2a2427&color=655a60" alt="MIT license"></a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement"><img src="https://img.shields.io/curseforge/dt/1785352?style=flat-square&logo=curseforge&logoColor=white&label=downloads&labelColor=0b0b0b&color=0b0b0b" alt="CurseForge downloads"></a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement/files"><img src="https://img.shields.io/badge/Minecraft-26.1%20%E2%80%93%2026.3-0b0b0b?style=flat-square&labelColor=0b0b0b" alt="Minecraft 26.1 to 26.3"></a>
+  <img src="https://img.shields.io/badge/loaders-Fabric%20%C2%B7%20Forge%20%C2%B7%20NeoForge-0b0b0b?style=flat-square&labelColor=0b0b0b" alt="Fabric, Forge, NeoForge">
+  <img src="https://img.shields.io/badge/side-client%20only-0b0b0b?style=flat-square&labelColor=0b0b0b" alt="Client only">
+  <img src="https://img.shields.io/badge/Java-25-0b0b0b?style=flat-square&logo=openjdk&logoColor=white&labelColor=0b0b0b" alt="Java 25">
+  <a href="https://www.curseforge.com/minecraft/mc-mods/mycel"><img src="https://img.shields.io/badge/requires-Mycel-0b0b0b?style=flat-square&logo=curseforge&logoColor=white&labelColor=0b0b0b" alt="Requires Mycel"></a>
+  <a href="https://wiki.mycelium-gg.org/advancements/"><img src="https://img.shields.io/badge/docs-wiki-0b0b0b?style=flat-square&labelColor=0b0b0b" alt="Docs on the wiki"></a>
+  <a href="https://github.com/MyCelium-GG/Advancements/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MyCelium-GG/Advancements?style=flat-square&labelColor=0b0b0b&color=0b0b0b" alt="MIT license"></a>
 </p>
 
 ![About the mod](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/about-the-mod.svg)
@@ -27,31 +27,8 @@
 
 ![Configuration](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/configuration.svg)
 
-`config/advancements.json`, reload live with `/mycel reload advancements`.
-
-| Key | Default | Meaning |
-|---|---|---|
-| `enabled` | `true` | Master switch. |
-| `showTracker` | `true` | Show the overlay. |
-| `trackerPosition` | `above_hotbar` | `above_hotbar`, `top_left` or `top_right`. |
-| `untrackWhenDone` | `true` | Drop the overlay a few seconds after the advancement is done. |
-| `clickForDetails` | `true` | Clicking an advancement opens its window. |
-| `sounds` | `true` | Sounds for progress, finishing and opening the window. |
-
-Which advancement has the overlay is saved per world and server in `config/advancements-tracked.json`.
+![Settings in config/advancements.json, reload with /mycel reload advancements. enabled (true): master switch. showTracker (true): show the overlay. trackerPosition (above_hotbar): above_hotbar, top_left or top_right. untrackWhenDone (true): drop the overlay a few seconds after the advancement is done. clickForDetails (true): clicking an advancement opens its window. sounds (true): sounds for progress, finishing and opening the window.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/config.svg)
 
 ![Anonymous stats](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/anonymous-stats.svg)
 
-Anonymous usage stats (windows opened, which advancements get the overlay, settings, and errors in this mod's
-code) go to its FastStats project through Mycel, following Mycel's one-time choice in your game.
-[Details](https://wiki.mycelium-gg.org/privacy#stats-advancements).
-
-![Building](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/building.svg)
-
-JDK 25, then:
-
-```sh
-./gradlew build            # all loaders + tests
-./gradlew :common:test     # unit tests only
-./gradlew build -Pmc=26.1  # the 26.1 or 26.2 line
-```
+<a href="https://wiki.mycelium-gg.org/privacy#stats-advancements"><img src="https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/stats.svg" alt="Advancements sends anonymous stats to its FastStats project through Mycel: how often windows are opened, which advancements get the overlay, the settings, and errors in its own code. It follows Mycel's choice exactly: the one-time screen in your own game." width="100%"></a>
