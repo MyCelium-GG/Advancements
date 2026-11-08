@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement"><img src="https://img.shields.io/curseforge/dt/1785352?style=flat-square&logo=curseforge&logoColor=white&label=downloads&labelColor=0b0b0b&color=0b0b0b" alt="CurseForge downloads"></a>
-  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement/files"><img src="https://img.shields.io/badge/Minecraft-26.1%20%E2%80%93%2026.3-0b0b0b?style=flat-square&labelColor=0b0b0b" alt="Minecraft 26.1 to 26.3"></a>
-  <img src="https://img.shields.io/badge/loaders-Fabric%20%C2%B7%20Forge%20%C2%B7%20NeoForge-0b0b0b?style=flat-square&labelColor=0b0b0b" alt="Fabric, Forge, NeoForge">
-  <img src="https://img.shields.io/badge/side-client%20only-0b0b0b?style=flat-square&labelColor=0b0b0b" alt="Client only">
-  <img src="https://img.shields.io/badge/Java-25-0b0b0b?style=flat-square&logo=openjdk&logoColor=white&labelColor=0b0b0b" alt="Java 25">
-  <a href="https://www.curseforge.com/minecraft/mc-mods/mycel"><img src="https://img.shields.io/badge/requires-Mycel-0b0b0b?style=flat-square&logo=curseforge&logoColor=white&labelColor=0b0b0b" alt="Requires Mycel"></a>
-  <a href="https://wiki.mycelium-gg.org/advancements/"><img src="https://img.shields.io/badge/docs-wiki-0b0b0b?style=flat-square&labelColor=0b0b0b" alt="Docs on the wiki"></a>
-  <a href="https://github.com/MyCelium-GG/Advancements/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MyCelium-GG/Advancements?style=flat-square&labelColor=0b0b0b&color=0b0b0b" alt="MIT license"></a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement"><img src="https://img.shields.io/curseforge/dt/1785352?style=flat-square&logo=curseforge&logoColor=white&label=downloads&color=F16436" alt="CurseForge downloads"></a>
+  <a href="https://www.curseforge.com/minecraft/mc-mods/advancement/files"><img src="https://img.shields.io/badge/Minecraft-26.1%20%E2%80%93%2026.3-62B47A?style=flat-square" alt="Minecraft 26.1 to 26.3"></a>
+  <img src="https://img.shields.io/badge/loaders-Fabric%20%C2%B7%20Forge%20%C2%B7%20NeoForge-1E88E5?style=flat-square" alt="Fabric, Forge, NeoForge">
+  <img src="https://img.shields.io/badge/side-client%20only-8E44AD?style=flat-square" alt="Client only">
+  <img src="https://img.shields.io/badge/Java-25-E76F00?style=flat-square&logo=openjdk&logoColor=white" alt="Java 25">
+  <a href="https://www.curseforge.com/minecraft/mc-mods/mycel"><img src="https://img.shields.io/badge/requires-Mycel-F16436?style=flat-square&logo=curseforge&logoColor=white" alt="Requires Mycel"></a>
+  <a href="https://wiki.mycelium-gg.org/advancements/"><img src="https://img.shields.io/badge/docs-wiki-0A7BBB?style=flat-square" alt="Docs on the wiki"></a>
+  <a href="https://github.com/MyCelium-GG/Advancements/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MyCelium-GG/Advancements?style=flat-square&color=F2C14E" alt="MIT license"></a>
 </p>
 
 ![About the mod](https://raw.githubusercontent.com/MyCelium-GG/Advancements/ab96aec95a76/docs/img/banners/about-the-mod.svg)
