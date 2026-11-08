@@ -8,7 +8,7 @@ window explains **how to get it**, shows how far along you are and lists
 exactly **what is still missing**: every biome, food, mob, cat or wolf variant.
 Turn on its **overlay** and follow it while you play, right above your hotbar.
 
-![The Advancements window over vanilla's advancements screen: Adventuring Time, How to get it, 29 of 56 done, and the biomes still needed](docs/img/window.png)
+![The Advancements window over vanilla's advancements screen: Adventuring Time, How to get it, 29 of 56 done, and the biomes still needed](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/window.png)
 
 Built on [Mycel](https://github.com/MyCelium-GG/MyCel-Lib) (`my.celium.org`), the shared
 core for the MyCelium ecosystem.
@@ -39,13 +39,13 @@ core for the MyCelium ecosystem.
 
 ![Screenshots](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/screenshots.svg)
 
-![Zombie Doctor: how to get it](docs/img/explain.png)
+![Zombie Doctor: how to get it](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/explain.png)
 
-![The overlay above the hotbar tracking A Balanced Diet, 23/40](docs/img/overlay.png)
+![The overlay above the hotbar tracking A Balanced Diet, 23/40](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/overlay.png)
 
-![The overlay animating after eating a melon slice](docs/img/animation.png)
+![The overlay animating after eating a melon slice](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/animation.png)
 
-![The corner layout: Monsters Hunted with the next mobs to hunt](docs/img/corner.png)
+![The corner layout: Monsters Hunted with the next mobs to hunt](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/corner.png)
 
 ![Anonymous stats](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/anonymous-stats.svg)
 
