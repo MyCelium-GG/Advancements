@@ -1,5 +1,7 @@
 # Advancements
 
+![About the mod](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/about-the-mod.svg)
+
 Vanilla tells you "Discover every biome", but not which ones you are missing.
 Advancements does. Click any advancement in the advancements screen and a small
 window explains **how to get it**, shows how far along you are and lists
@@ -18,7 +20,7 @@ core for the MyCelium ecosystem.
 | Loaders | Fabric, Forge, NeoForge |
 | Side | Client only: works in singleplayer and on any server, vanilla ones included |
 
-## Behavior
+![How it works](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/how-it-works.svg)
 
 - **Click an advancement** in the advancements screen (**L**) to open its
   window. Dragging the tree and switching category tabs work as before.
@@ -35,6 +37,8 @@ core for the MyCelium ecosystem.
   and sparks, fades in `+ Melon Slice` and plays a chime that climbs in pitch.
   Finishing gets a bigger celebration, then the overlay shrinks away.
 
+![Screenshots](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/screenshots.svg)
+
 ![Zombie Doctor: how to get it](docs/img/explain.png)
 
 ![The overlay above the hotbar tracking A Balanced Diet, 23/40](docs/img/overlay.png)
@@ -43,7 +47,7 @@ core for the MyCelium ecosystem.
 
 ![The corner layout: Monsters Hunted with the next mobs to hunt](docs/img/corner.png)
 
-## Anonymous stats
+![Anonymous stats](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/anonymous-stats.svg)
 
 Advancements sends anonymous stats (how often windows are opened, which
 advancements get the overlay, the settings, and errors in its own code) to its
@@ -51,7 +55,9 @@ FastStats project through Mycel. It follows Mycel's choice exactly: the
 one-time screen in your own game. Details:
 https://wiki.mycelium-gg.org/privacy#stats-advancements
 
-## Configuration (`config/advancements.json`)
+![Configuration](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/configuration.svg)
+
+Settings live in `config/advancements.json`.
 
 | Key | Default | Meaning |
 |---|---|---|
@@ -65,7 +71,7 @@ https://wiki.mycelium-gg.org/privacy#stats-advancements
 Reload live with `/mycel reload advancements`. Which advancement has the
 overlay is saved per world and server in `config/advancements-tracked.json`.
 
-## Building
+![Building](https://raw.githubusercontent.com/MyCelium-GG/Advancements/main/docs/img/banners/building.svg)
 
 JDK 25, then:
 
