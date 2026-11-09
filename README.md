@@ -13,6 +13,8 @@
   <a href="https://github.com/MyCelium-GG/Advancements/blob/main/LICENSE"><img src="https://img.shields.io/github/license/MyCelium-GG/Advancements?style=flat-square&color=F2C14E" alt="MIT license"></a>
 </p>
 
+<a href="https://www.curseforge.com/minecraft/mc-mods/mycel"><img src="https://raw.githubusercontent.com/MyCelium-GG/Advancements/b2b662350d32/docs/img/banners/mycel-required.svg" alt="Mycel is required: this mod needs the Mycel library to run. Install Mycel next to it, for the same Minecraft version and loader. Download it from CurseForge." width="100%"></a>
+
 ![About the mod](https://raw.githubusercontent.com/MyCelium-GG/Advancements/ab96aec95a76/docs/img/banners/about-the-mod.svg)
 
 ![Vanilla won't tell you which biomes you are missing. Click any advancement and a small window shows how to get it, how far along you are and exactly what is still missing. Then track it above your hotbar.](https://raw.githubusercontent.com/MyCelium-GG/Advancements/ab96aec95a76/docs/img/banners/about.svg)
