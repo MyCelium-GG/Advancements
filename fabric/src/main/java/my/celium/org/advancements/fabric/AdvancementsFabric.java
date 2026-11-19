@@ -7,6 +7,11 @@ import net.fabricmc.api.ModInitializer;
 public final class AdvancementsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
+        if (!net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("mycel")) {
+            my.celium.org.advancements.MissingMycel.logOnce();
+            return;
+        }
+        my.celium.org.advancements.ModGate.open();
         AdvancementsMod.init();
     }
 }

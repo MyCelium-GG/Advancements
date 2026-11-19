@@ -12,6 +12,11 @@ import net.minecraft.resources.Identifier;
 public final class AdvancementsFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        if (!net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("mycel")) {
+            net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.END_CLIENT_TICK.register(
+                    my.celium.org.advancements.MissingMycel::tick);
+            return;
+        }
         ClientTickEvents.END_CLIENT_TICK.register(AdvancementsClient::tick);
         HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(AdvancementsMod.ID, "tracker"),
                 (gfx, tracker) -> TrackerHud.render(gfx));

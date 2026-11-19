@@ -14,6 +14,9 @@ import net.minecraft.network.chat.Component;
 public abstract class ActionBarMixin {
     @Inject(method = "setOverlayMessage", at = @At("HEAD"))
     private void advancements$actionBar(Component message, boolean animate, CallbackInfo ci) {
+        if (!my.celium.org.advancements.ModGate.on()) {
+            return;
+        }
         Tracker.actionBarShown();
     }
 }

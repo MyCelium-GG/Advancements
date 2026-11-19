@@ -43,6 +43,9 @@ public abstract class AdvancementsScreenMixin extends Screen {
     /** A left click on an advancement opens its window right away; everything else is vanilla's. */
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
     private void advancements$click(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
+        if (!my.celium.org.advancements.ModGate.on()) {
+            return;
+        }
         if (event.button() != InputConstants.MOUSE_BUTTON_LEFT || !AdvancementsMod.isModEnabled()
                 || !AdvancementsMod.clickForDetails.get() || selectedTab == null) {
             return;
@@ -57,6 +60,9 @@ public abstract class AdvancementsScreenMixin extends Screen {
 
     @Inject(method = "extractRenderState", at = @At("TAIL"))
     private void advancements$hint(GuiGraphicsExtractor gfx, int mouseX, int mouseY, float a, CallbackInfo ci) {
+        if (!my.celium.org.advancements.ModGate.on()) {
+            return;
+        }
         if (AdvancementsMod.isModEnabled() && AdvancementsMod.clickForDetails.get()) {
             AdvancementsScreenHooks.drawHint(gfx, font, width, height);
         }

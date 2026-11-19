@@ -136,5 +136,7 @@
   "advancementsmod.explain.story.root": "Craft a Crafting Table from 4 planks. Having one in your inventory is enough.",
   "advancementsmod.explain.story.shiny_gear": "Craft any one piece of diamond armor.",
   "advancementsmod.explain.story.smelt_iron": "Mine iron ore with a stone pickaxe, put the raw iron in a furnace with fuel and take out an iron ingot.",
-  "advancementsmod.explain.story.upgrade_tools": "Craft a stone pickaxe: 3 cobblestone on top, 2 sticks below, at a Crafting Table."
+  "advancementsmod.explain.story.upgrade_tools": "Craft a stone pickaxe: 3 cobblestone on top, 2 sticks below, at a Crafting Table.",
+  "advancementsmod.missing_mycel": "Mycel is missing. %s needs the Mycel library to work and stays off until it is installed.",
+  "advancementsmod.missing_mycel.download": "[Download Mycel]"
 }

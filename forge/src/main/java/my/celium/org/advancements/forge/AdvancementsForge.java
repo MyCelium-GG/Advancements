@@ -15,6 +15,15 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 @Mod(AdvancementsMod.ID)
 public final class AdvancementsForge {
     public AdvancementsForge(@SuppressWarnings("unused") FMLJavaModLoadingContext context) {
+        if (!net.minecraftforge.fml.ModList.isLoaded("mycel")) {
+            my.celium.org.advancements.MissingMycel.logOnce();
+            if (net.minecraftforge.fml.loading.FMLEnvironment.dist == net.minecraftforge.api.distmarker.Dist.CLIENT) {
+                net.minecraftforge.event.TickEvent.ClientTickEvent.Post.BUS.addListener(
+                        event -> my.celium.org.advancements.MissingMycel.tick(net.minecraft.client.Minecraft.getInstance()));
+            }
+            return;
+        }
+        my.celium.org.advancements.ModGate.open();
         AdvancementsMod.init();
         if (FMLEnvironment.dist == Dist.CLIENT) {
             ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,

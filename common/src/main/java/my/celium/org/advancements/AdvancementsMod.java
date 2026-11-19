@@ -17,7 +17,7 @@ import my.celium.org.metadata.ModMetadata;
 public final class AdvancementsMod {
     public static final String ID = "advancements";
 
-    public static final ModMetadata META = ModMetadata.builder(ID, "Advancements", "1.0.0")
+    public static final ModMetadata META = ModMetadata.builder(ID, "Advancements", "1.1.0")
             .author("MyCelium")
             .website("https://www.curseforge.com/minecraft/mc-mods/advancement")
             .updateUrl("https://wiki.mycelium-gg.org/updates/advancements.json")
